@@ -4,9 +4,11 @@ import "easymde/dist/easymde.min.css";
 import styled from 'styled-components';
 
 const TextContainer = styled.div`
-    width: 80%;
+    width: 70%;
     height: 80vh;
     fontSize: 20px;
+    padding: 3% 5%;
+    overflow-y: scroll;
 `;
 
 export const Editor = () => {
