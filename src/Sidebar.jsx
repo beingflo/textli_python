@@ -8,13 +8,15 @@ const SidebarContainer = styled.div`
     display: flex;
     flex-direction: column;
     padding: 40px;
+    padding-left: 50px;
 `;
 
 const DirectoryEntry = styled.div`
     color: black;
-    font-size: 22px;
-    padding-left: ${props => props.indent * 20}px;
+    font-size: 18px;
     padding-bottom: 2px;
+    cursor: ${props => props.isClickable ? 'pointer' : ''};
+    padding-left: ${props => props.indent * 20}px;
 `;
 
 export const Sidebar = () => {
@@ -22,11 +24,19 @@ export const Sidebar = () => {
 
     const sortedFiles = files.sort();
 
+    const handleClick = e => {
+        const name = e.currentTarget.dataset.id;
+    }
+
+    const isFile = file => {
+        return file.endsWith('.md');
+    }
+
     return (
         <SidebarContainer>
-            { sortedFiles.map(file => getName(file)).map(([name, indent]) =>
-                <DirectoryEntry indent= {indent}>
-                    {name}
+            { sortedFiles.map(file =>
+                <DirectoryEntry key={file} data-id={file} onClick={e => handleClick(e)} indent= {getName(file)[1]} isClickable={isFile(file)}>
+                    {getName(file)[0]}
                 </DirectoryEntry>
             )}
         </SidebarContainer>
@@ -86,7 +96,7 @@ const getTestFiles = () => {
             'Work/project1/task1/subtask1/subsubtask1',
             'Work/project1/task1/subtask1/subsubtask1/test1.md',
             'Work/project1/task1/subtask1/subsubtask1/test2.md',
-            'Work/project1/task1/subtask1/subsubtask1/test2.md',
+            'Work/project1/task1/subtask1/subsubtask1/test3.md',
             'Work/project1/task1/subtask1/subsubtask2/test1.md',
             'Work/project1/task1/subtask1/subsubtask2/test2.md',
         ]
