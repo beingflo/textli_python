@@ -10,13 +10,26 @@ const Container = styled.div`
     width: 100%;
 `;
 
+const SidebarContainer = styled.div`
+    width: 25%;
+`;
+
+const EditorContainer = styled.div`
+    width: 75%;
+    overflow-y: scroll;
+`;
+
 function App() {
     return (
         <div className="App">
             <header className="App-header">
                 <Container>
-                <Sidebar />
-                <Editor />
+                    <SidebarContainer>
+                        <Sidebar />
+                    </SidebarContainer>
+                    <EditorContainer>
+                        <Editor />
+                    </EditorContainer>
                 </Container>
             </header>
         </div>

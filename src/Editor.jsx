@@ -4,11 +4,9 @@ import "easymde/dist/easymde.min.css";
 import styled from 'styled-components';
 
 const TextContainer = styled.div`
-    width: 70%;
-    height: 80vh;
+    height: 85vh;
     fontSize: 20px;
-    padding: 3% 5%;
-    overflow-y: scroll;
+    padding: 3% 5% 0 5%;
 `;
 
 export const Editor = () => {
@@ -18,7 +16,7 @@ export const Editor = () => {
                 autofocus: true,
                 spellChecker: false,
                 toolbar: false,
-                minHeight: '80vh',
+                minHeight: '85vh',
             }} />
         </TextContainer>
     );
