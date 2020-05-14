@@ -13,9 +13,13 @@ def getfiles():
     files = get_file_list()
     return json.dumps(files)
 
-@app.route('/bye')
-def good_bye():
-    return 'Good Bye, World'
+@app.route('/read/<file>')
+def readfile(file):
+    return 'reading ' + file
+
+@app.route('/write/<file>')
+def writefile(file):
+    return 'writing ' + file
 
 def get_file_list():
     filenames = []

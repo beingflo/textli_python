@@ -30,7 +30,7 @@ export const Sidebar = () => {
 
     const handleClick = e => {
         const name = e.currentTarget.dataset.id;
-        console.log(name);
+        fetch(`http://192.168.0.157:5000/read/'${name}'`).then(res => res.text()).then(res => console.log(res))
     }
 
     const isFile = file => {
