@@ -12,13 +12,12 @@ const Container = styled.div`
 
 const SidebarContainer = styled.div`
     width: 25%;
-    overflow-y: scroll;
-    scrollbar-width: none;
 `;
+    //overflow-y: scroll;
+    // scrollbar-width: none;
 
 const EditorContainer = styled.div`
     width: 75%;
-    overflow-y: scroll;
 `;
 
 function App() {
