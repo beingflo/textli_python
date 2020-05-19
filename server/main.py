@@ -15,7 +15,8 @@ def getfiles():
 
 @app.route('/read/<file>')
 def readfile(file):
-    return 'reading ' + file
+    f = open(os.path.join(NOTES_DIR, file), 'r')
+    return f.read()
 
 @app.route('/write/<file>')
 def writefile(file):
