@@ -21,15 +21,17 @@ const EditorContainer = styled.div`
 `;
 
 function App() {
+    const [text, setText] = React.useState('');
+
     return (
         <div className="App">
             <header className="App-header">
                 <Container>
                     <SidebarContainer>
-                        <Sidebar />
+                        <Sidebar text={text} setText={setText} />
                     </SidebarContainer>
                     <EditorContainer>
-                        <Editor />
+                        <Editor text={text} setText={setText} />
                     </EditorContainer>
                 </Container>
             </header>

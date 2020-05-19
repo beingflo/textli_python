@@ -5,12 +5,14 @@ import styled from 'styled-components';
 
 const TextContainer = styled.div`
     height: 85vh;
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: lighter;
     padding: 3% 5% 0 5%;
 `;
 
-export const Editor = () => {
-    const [text, setText] = React.useState('');
+export const Editor = (props) => {
+    const { text, setText } = props;
+
     const handleChange = value => {
         setText(value);
     };

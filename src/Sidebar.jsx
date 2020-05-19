@@ -19,7 +19,8 @@ const DirectoryEntry = styled.div`
     padding-left: ${props => props.indent * 20}px;
 `;
 
-export const Sidebar = () => {
+export const Sidebar = (props) => {
+    const {text, setText} = props;
     const [files, setFiles] = React.useState([])
 
     React.useEffect(() => {
@@ -30,7 +31,7 @@ export const Sidebar = () => {
 
     const handleClick = e => {
         const name = e.currentTarget.dataset.id;
-        fetch(`http://192.168.1.196:5000/read/${name}`).then(res => res.text()).then(res => console.log(res))
+        fetch(`http://192.168.1.196:5000/read/${name}`).then(res => res.text()).then(res => setText(res))
     }
 
     const isFile = file => {
