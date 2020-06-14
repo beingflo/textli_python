@@ -28,7 +28,7 @@ function App() {
             <header className="App-header">
                 <Container>
                     <SidebarContainer>
-                        <Sidebar text={text} setText={setText} />
+                        <Sidebar setText={setText} />
                     </SidebarContainer>
                     <EditorContainer>
                         <Editor text={text} setText={setText} />

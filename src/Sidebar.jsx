@@ -20,18 +20,18 @@ const DirectoryEntry = styled.div`
 `;
 
 export const Sidebar = (props) => {
-    const {text, setText} = props;
+    const {setText} = props;
     const [files, setFiles] = React.useState([])
 
     React.useEffect(() => {
-        fetch('http://192.168.1.196:5000/getfiles').then(res => res.json()).then(res => setFiles(res))
+        fetch('http://192.168.0.157:5000/getfiles').then(res => res.json()).then(res => setFiles(res))
     }, []);
 
     const sortedFiles = files.sort();
 
     const handleClick = e => {
         const name = e.currentTarget.dataset.id;
-        fetch(`http://192.168.1.196:5000/read/${name}`).then(res => res.text()).then(res => setText(res))
+        fetch(`http://192.168.0.157:5000/read/${name}`).then(res => res.text()).then(res => setText(res))
     }
 
     const isFile = file => {

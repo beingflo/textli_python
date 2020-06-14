@@ -19,8 +19,8 @@ export const Editor = (props) => {
 
     return (
         <TextContainer>
-            <SimpleMDE onChange={handleChange} value={text} options={{
-                autofocus: text ? false : true,
+            <SimpleMDE id="mde" onChange={handleChange} value={text} options={{
+                autofocus: true,
                 spellChecker: false,
                 toolbar: false,
                 minHeight: '85vh',
