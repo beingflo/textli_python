@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -18,8 +18,13 @@ def readfile(file):
     f = open(os.path.join(NOTES_DIR, file), 'r')
     return f.read()
 
-@app.route('/write/<file>')
+@app.route('/write/<file>', methods = ['POST'])
 def writefile(file):
+    print(file)
+    content = request.data.decode("utf-8")
+    f = open(os.path.join(NOTES_DIR, 'testfile.md'), 'w')
+    f.write(content)
+    f.close()
     return 'writing ' + file
 
 def get_file_list():
