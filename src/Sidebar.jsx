@@ -20,19 +20,7 @@ const DirectoryEntry = styled.div`
 `;
 
 export const Sidebar = (props) => {
-    const {setText} = props;
-    const [files, setFiles] = React.useState([])
-
-    React.useEffect(() => {
-        fetch('http://192.168.0.157:5000/getfiles').then(res => res.json()).then(res => setFiles(res))
-    }, []);
-
-    const sortedFiles = files.sort();
-
-    const handleClick = e => {
-        const name = e.currentTarget.dataset.id;
-        fetch(`http://192.168.0.157:5000/read/${name}`).then(res => res.text()).then(res => setText(res))
-    }
+    const { files, onFileClick } = props;
 
     const isFile = file => {
         return file.endsWith('.md');
@@ -40,8 +28,8 @@ export const Sidebar = (props) => {
 
     return (
         <SidebarContainer>
-            { sortedFiles.map(file =>
-                <DirectoryEntry key={file} data-id={file} onClick={e => handleClick(e)} indent= {getName(file)[1]} isClickable={isFile(file)}>
+            { files.map(file =>
+                <DirectoryEntry key={file} data-id={file} onClick={e => onFileClick(e)} indent= {getName(file)[1]} isClickable={isFile(file)}>
                     {getName(file)[0]}
                 </DirectoryEntry>
             )}

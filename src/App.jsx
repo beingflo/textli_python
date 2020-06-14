@@ -22,13 +22,23 @@ const EditorContainer = styled.div`
 
 function App() {
     const [text, setText] = React.useState('');
+    const [files, setFiles] = React.useState([])
+
+    React.useEffect(() => {
+        fetch('http://192.168.0.157:5000/getfiles').then(res => res.json()).then(res => setFiles(res.sort()))
+    }, []);
+
+    const handleClick = e => {
+        const name = e.currentTarget.dataset.id;
+        fetch(`http://192.168.0.157:5000/read/${name}`).then(res => res.text()).then(res => setText(res))
+    }
 
     return (
         <div className="App">
             <header className="App-header">
                 <Container>
                     <SidebarContainer>
-                        <Sidebar setText={setText} />
+                        <Sidebar files={files} onFileClick={handleClick} />
                     </SidebarContainer>
                     <EditorContainer>
                         <Editor text={text} setText={setText} />
