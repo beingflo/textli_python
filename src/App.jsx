@@ -27,7 +27,7 @@ function App() {
   const [files, setFiles] = React.useState([])
 
   React.useEffect(() => {
-    fetch(`http://${HOST}/getfiles`).then(res => res.json()).then(res => setFiles(res.sort()))
+    fetch(`http://${HOST}/list`).then(res => res.json()).then(res => setFiles(res.sort()))
   }, []);
 
   const loadFile = e => {
@@ -36,14 +36,15 @@ function App() {
   }
 
   const getFilename = content => {
-    const noHash = content.split('#').join('');
+    const firstLine = content.split('\n')[0]
+    const noHash = firstLine.split('#').join('');
     const name = noHash.split(' ').join('');
     return `${name}.md`;
   }
 
   const saveFile = () => {
     const filename = getFilename(text);
-    fetch(`http://${HOST}/write/${filename}`, {
+    fetch(`http://${HOST}/create/${filename}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/text',
