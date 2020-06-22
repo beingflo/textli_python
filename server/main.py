@@ -8,28 +8,31 @@ CORS(app)
 
 NOTES_DIR = '/home/florian/Notes'
 
-
-@app.route('/getfiles')
-def getfiles():
+@app.route('/list')
+def listfiles():
   files = get_file_list()
   return json.dumps(files)
 
-
-@app.route('/read/<file>')
-def readfile(file):
-  f = open(os.path.join(NOTES_DIR, file), 'r')
-  return f.read()
-
-
-@app.route('/write/<file>', methods=['POST'])
-def writefile(file):
-  print(file)
+@app.route('/create/<file>', methods=['POST'])
+def createfile(file):
   content = request.data.decode("utf-8")
   f = open(os.path.join(NOTES_DIR, file), 'w')
   f.write(content)
   f.close()
   return 'writing ' + file
 
+@app.route('/read/<file>')
+def readfile(file):
+  f = open(os.path.join(NOTES_DIR, file), 'r')
+  return f.read()
+
+@app.route('/update/<file>')
+def updatefile(file):
+  pass
+
+@app.route('/delete/<file>')
+def deletefile(file):
+  pass
 
 def get_file_list():
   filenames = []
