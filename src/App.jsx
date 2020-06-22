@@ -4,6 +4,8 @@ import { Editor } from './Editor'
 import { Sidebar } from './Sidebar'
 import styled from 'styled-components';
 
+const HOST = '192.168.1.196:5000';
+
 const Container = styled.div`
     display: flex;
     flex-direction: row;
@@ -25,16 +27,23 @@ function App() {
   const [files, setFiles] = React.useState([])
 
   React.useEffect(() => {
-    fetch('http://192.168.0.157:5000/getfiles').then(res => res.json()).then(res => setFiles(res.sort()))
+    fetch(`http://${HOST}/getfiles`).then(res => res.json()).then(res => setFiles(res.sort()))
   }, []);
 
   const loadFile = e => {
     const name = e.currentTarget.dataset.id;
-    fetch(`http://192.168.0.157:5000/read/${name}`).then(res => res.text()).then(res => setText(res))
+    fetch(`http://${HOST}/read/${name}`).then(res => res.text()).then(res => setText(res));
+  }
+
+  const getFilename = content => {
+    const noHash = content.split('#').join('');
+    const name = noHash.split(' ').join('');
+    return `${name}.md`;
   }
 
   const saveFile = () => {
-    fetch(`http://192.168.0.157:5000/write/Testfile`, {
+    const filename = getFilename(text);
+    fetch(`http://${HOST}/write/${filename}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/text',

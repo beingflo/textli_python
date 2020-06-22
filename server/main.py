@@ -25,7 +25,7 @@ def readfile(file):
 def writefile(file):
   print(file)
   content = request.data.decode("utf-8")
-  f = open(os.path.join(NOTES_DIR, 'testfile.md'), 'w')
+  f = open(os.path.join(NOTES_DIR, file), 'w')
   f.write(content)
   f.close()
   return 'writing ' + file
