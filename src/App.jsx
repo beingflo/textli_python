@@ -4,7 +4,7 @@ import { Editor } from './Editor'
 import { Sidebar } from './Sidebar'
 import styled from 'styled-components';
 
-const HOST = '192.168.1.196:5000';
+const HOST = 'localhost:5000';
 
 const Container = styled.div`
     display: flex;
