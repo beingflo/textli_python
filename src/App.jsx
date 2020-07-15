@@ -27,12 +27,12 @@ function App() {
   const [files, setFiles] = React.useState([])
 
   React.useEffect(() => {
-    fetch(`http://${HOST}/list`).then(res => res.json()).then(res => setFiles(res.sort()))
+    fetch(`http://${HOST}/files`).then(res => res.json()).then(res => setFiles(res))
   }, []);
 
   const loadFile = e => {
-    const name = e.currentTarget.dataset.id;
-    fetch(`http://${HOST}/read/${name}`).then(res => res.text()).then(res => setText(res));
+    const id = e.currentTarget.dataset.id;
+    fetch(`http://${HOST}/files/${id}`).then(res => res.text()).then(res => setText(res));
   }
 
   const getFilename = content => {
