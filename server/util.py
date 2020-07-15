@@ -1,18 +1,28 @@
 import os
-from main import NOTES_DIR
+import hashlib
+from constants import NOTES_DIR
 
+# JSON format for file list
+#
+# [
+#   id: string,
+#   name: string,
+# ]
+#
 
 def get_file_list():
-    filenames = []
+    # files to be sent on list request
+    filelist = []
+
+    # map from id to fullpath for reading files
+    filemap = {}
 
     for root, dirs, files in os.walk(NOTES_DIR):
-        for d in dirs:
-            fullpath = os.path.join(root, d)
-            partialpath = fullpath[len(NOTES_DIR) + 1:]
-            filenames.append(partialpath)
         for f in files:
             fullpath = os.path.join(root, f)
-            partialpath = fullpath[len(NOTES_DIR) + 1:]
-            filenames.append(partialpath)
+            hash = hashlib.sha1(fullpath.encode('utf-8'))
+            id = hash.hexdigest()
+            filemap[id] = fullpath
+            filelist.append({'id': id, 'name': f})
 
-    return sorted(filenames)
+    return (filelist, filemap)

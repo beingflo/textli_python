@@ -3,17 +3,18 @@ import json
 from flask import Flask, request
 from flask_cors import CORS
 from util import get_file_list
+from constants import NOTES_DIR
 
 app = Flask(__name__)
 CORS(app)
 
-NOTES_DIR = '/home/florian/Notes'
 
+(filelist, filemap) = get_file_list()
+print(json.dumps(filelist))
 
 @app.route('/files', methods=['GET'])
 def listfiles():
-    files = get_file_list()
-    return json.dumps(files)
+    return json.dumps(filelist)
 
 
 @app.route('/files', methods=['POST'])
