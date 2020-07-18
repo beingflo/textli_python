@@ -15,6 +15,16 @@ def listfiles():
     return json.dumps(filelist)
 
 
+@app.route('/files/<id>', methods=['GET'])
+def readfile(id):
+    filename = id + '.md'
+    try:
+        f = open(os.path.join(NOTES_DIR, filename), 'r')
+        return f.read()
+    except:
+        return 'File not found'
+
+
 @app.route('/files', methods=['POST'])
 def createfile(file):
     content = request.data.decode("utf-8")
@@ -22,12 +32,6 @@ def createfile(file):
     f.write(content)
     f.close()
     return 'writing ' + file
-
-
-@app.route('/files/<id>', methods=['GET'])
-def readfile(id):
-    f = open(os.path.join(NOTES_DIR, id), 'r')
-    return f.read()
 
 
 @app.route('/files/<id>', methods=['PUT'])

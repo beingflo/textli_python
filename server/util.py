@@ -19,6 +19,7 @@ def get_file_list():
             fullpath = os.path.join(root, f)
             content = open(fullpath, 'r').read().partition('\n')[0]
             name = re.sub('[#]', '', content)
-            filelist.append({'id': f, 'name': name.lstrip()})
+            id = os.path.splitext(f)[0]
+            filelist.append({'id': id, 'name': name.lstrip()})
 
     return filelist
