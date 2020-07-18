@@ -9,11 +9,9 @@ app = Flask(__name__)
 CORS(app)
 
 
-(filelist, filemap) = get_file_list()
-print(json.dumps(filelist))
-
 @app.route('/files', methods=['GET'])
 def listfiles():
+    filelist = get_file_list()
     return json.dumps(filelist)
 
 

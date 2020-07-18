@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const TextContainer = styled.div`
   height: 85vh;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: lighter;
   padding: 3% 5% 0 5%;
 `;

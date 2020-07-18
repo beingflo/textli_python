@@ -14,7 +14,7 @@ const SidebarContainer = styled.div`
 const FileEntry = styled.div`
   color: black;
   font-size: 18px;
-  padding-bottom: 2px;
+  padding-bottom: 10px;
   cursor: pointer;
 `;
 
