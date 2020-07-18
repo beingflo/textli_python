@@ -45,3 +45,19 @@ def get_next_id():
             max_id = max(max_id, id)
 
     return max_id+1
+
+def id_exists(id):
+    for root, dirs, files in os.walk(NOTES_DIR):
+        for f in files:
+            idx = int(os.path.splitext(f)[0])
+            if int(id) == idx:
+                return True
+
+    return False
+
+def write_file(id, content):
+    filename = id_to_filename(id)
+
+    f = open(os.path.join(NOTES_DIR, filename), 'w')
+    f.write(content)
+    f.close()
