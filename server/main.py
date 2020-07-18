@@ -76,8 +76,8 @@ def readfile(id):
         content = f.read()
         f.close()
         return content
-    except:
-        return 'File not found'
+    except OSError as error:
+        return str(error)
 
 
 @app.route('/files', methods=['POST'])
@@ -114,5 +114,5 @@ def deletefile(id):
     try:
         os.remove(os.path.join(NOTES_DIR, filename))
         return 'OK'
-    except:
-        return 'File not removed'
+    except OSError as error:
+        return str(error)

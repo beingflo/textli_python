@@ -23,16 +23,20 @@ def get_file_list(query):
 
     return filelist
 
+
 def new_file_object(id, name):
-   return {'id': id, 'name': name}
+    return {'id': id, 'name': name}
+
 
 def get_name(content):
     line = content.partition('\n')[0]
     clean_line = re.sub('[#]', '', line)
     return clean_line.lstrip()
 
+
 def id_to_filename(id):
     return str(id) + EXTENSION
+
 
 def get_next_id():
     max_id = 0
@@ -41,7 +45,8 @@ def get_next_id():
             id = int(os.path.splitext(f)[0])
             max_id = max(max_id, id)
 
-    return max_id+1
+    return max_id + 1
+
 
 def id_exists(id):
     for root, dirs, files in os.walk(NOTES_DIR):
@@ -51,6 +56,7 @@ def id_exists(id):
                 return True
 
     return False
+
 
 def write_file(id, content):
     filename = id_to_filename(id)
