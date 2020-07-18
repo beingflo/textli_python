@@ -73,7 +73,9 @@ def readfile(id):
     filename = id_to_filename(id)
     try:
         f = open(os.path.join(NOTES_DIR, filename), 'r')
-        return f.read()
+        content = f.read()
+        f.close()
+        return content
     except:
         return 'File not found'
 
