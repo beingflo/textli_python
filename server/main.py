@@ -51,4 +51,13 @@ def updatefile(id):
 
 @app.route('/files/<id>', methods=['DELETE'])
 def deletefile(id):
-    pass
+    if not id_exists(id):
+        return 'File does not exist'
+
+    filename = id_to_filename(id)
+
+    try:
+        os.remove(os.path.join(NOTES_DIR, filename))
+        return 'OK'
+    except:
+        return 'File not removed'
