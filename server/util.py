@@ -10,7 +10,7 @@ from constants import NOTES_DIR, EXTENSION
 # ]
 #
 
-def get_file_list():
+def get_file_list(query):
     # files to be sent on list request
     filelist = []
 
@@ -19,6 +19,10 @@ def get_file_list():
             fullpath = os.path.join(root, f)
 
             content = open(fullpath, 'r').read()
+
+            if not query.lower() in content.lower():
+                continue
+
             name = get_name(content)
             id = os.path.splitext(f)[0]
 

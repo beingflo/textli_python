@@ -11,7 +11,11 @@ CORS(app)
 
 @app.route('/files', methods=['GET'])
 def listfiles():
-    filelist = get_file_list()
+    query = request.args.get('query')
+    if query == None:
+        query = ''
+
+    filelist = get_file_list(query)
     return json.dumps(filelist)
 
 
