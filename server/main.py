@@ -5,6 +5,55 @@ from flask_cors import CORS
 from util import get_file_list, get_next_id, id_to_filename, new_file_object, get_name, id_exists, write_file
 from constants import NOTES_DIR
 
+
+# JSON format for response
+#
+# Error:
+# {
+#   status: 'Ok' | 'Error',
+#   description: string,
+# }
+#
+# GET /files:
+# {
+#   status: 'Ok' | 'Error',
+#   files: [ FILE ],
+# }
+#
+# GET /files/<id>:
+# {
+#   status: 'Ok' | 'Error',
+#   file: FILE,
+# }
+#
+# POST /files:
+# {
+#   status: 'Ok' | 'Error',
+#   file: FILE,
+# }
+#
+# PUT /files/<id>:
+# {
+#   status: 'Ok' | 'Error',
+#   file: FILE,
+# }
+#
+# DELETE /files/<id>:
+# {
+#   status: 'Ok' | 'Error',
+#   file: FILE,
+# }
+#
+# TYPES
+# -----
+#
+# FILE = {
+#   id: string,
+#   name: string,
+# }
+#
+
+
 app = Flask(__name__)
 CORS(app)
 

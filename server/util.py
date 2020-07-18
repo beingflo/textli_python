@@ -2,13 +2,6 @@ import os
 import re
 from constants import NOTES_DIR, EXTENSION
 
-# JSON format for file list
-#
-# [
-#   id: string,
-#   name: string,
-# ]
-#
 
 def get_file_list(query):
     # files to be sent on list request
