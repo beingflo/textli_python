@@ -54,7 +54,10 @@ function App() {
     deleteFile(currentId);
   };
 
-  const newFile = () => {};
+  const newFile = () => {
+    setCurrentId(null);
+    setText('');
+  };
 
   return (
     <div className="App">
