@@ -29,3 +29,7 @@ export const updateFile = (content, currentId) => {
   })
     .then(response => response.json());
 }
+
+export const deleteFile = (currentId) => {
+  fetch(`http://${HOST}/files/${currentId}`, { method: 'DELETE' }).then(response => response.json());
+}
