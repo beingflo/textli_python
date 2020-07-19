@@ -25,7 +25,7 @@ const EditorContainer = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  padding: 1% 0;
+  padding: 1.5% 0;
 `;
 
 function App() {
@@ -33,31 +33,42 @@ function App() {
   const [files, setFiles] = React.useState([])
   const [currentId, setCurrentId] = React.useState(null);
 
+  const [editorKey, setEditorKey] = React.useState(42);
+
+  const forceEditorRerender = React.useCallback(() => {
+    setEditorKey(editorKey +  1);
+  }, [editorKey]);
+
   React.useEffect(() => {
     getFiles(setFiles);
   }, []);
 
   const loadFile = React.useCallback(e => {
     const id = e.currentTarget.dataset.id;
-    getFile(id, setText, setCurrentId);
-  }, []);
+    getFile(id, setText, setCurrentId).then(() => forceEditorRerender());
+  }, [forceEditorRerender]);
 
   const saveFile = React.useCallback(() => {
     if (currentId) {
-      updateFile(text, currentId);
+      updateFile(text, currentId).then(() => getFiles(setFiles));
     } else {
-      postFile(text, setCurrentId);
+      postFile(text, setCurrentId).then(() => getFiles(setFiles));
     }
   }, [currentId, text]);
 
   const delFile = () => {
-    deleteFile(currentId);
+    if (!currentId) {
+      newFile();
+      return;
+    }
+    deleteFile(currentId).then(() => newFile()).then(() => getFiles(setFiles));
   };
 
-  const newFile = () => {
+  const newFile = React.useCallback(() => {
     setCurrentId(null);
     setText('');
-  };
+    forceEditorRerender();
+  }, [forceEditorRerender]);
 
   return (
     <div className="App">
@@ -72,7 +83,7 @@ function App() {
               <Button positive onClick={saveFile}>Save</Button>
               <Button negative onClick={delFile}>Delete</Button>
             </ButtonContainer>
-            <Editor text={text} setText={setText} />
+            <Editor text={text} setText={setText} editorKey={editorKey} />
           </EditorContainer>
         </Container>
       </header>

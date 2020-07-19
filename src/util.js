@@ -5,11 +5,11 @@ export const getFiles = (setFiles) => {
 }
 
 export const getFile = (id, setText, setCurrentId) => {
-  fetch(`http://${HOST}/files/${id}`).then(res => res.json()).then(res => { setText(res.content); setCurrentId(id) });
+  return fetch(`http://${HOST}/files/${id}`).then(res => res.json()).then(res => { setText(res.content); setCurrentId(id) });
 }
 
 export const postFile = (content, setCurrentId) => {
-  fetch(`http://${HOST}/files`, {
+  return fetch(`http://${HOST}/files`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/text',
@@ -20,7 +20,7 @@ export const postFile = (content, setCurrentId) => {
 };
 
 export const updateFile = (content, currentId) => {
-  fetch(`http://${HOST}/files/${currentId}`, {
+  return fetch(`http://${HOST}/files/${currentId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/text',
@@ -31,5 +31,5 @@ export const updateFile = (content, currentId) => {
 }
 
 export const deleteFile = (currentId) => {
-  fetch(`http://${HOST}/files/${currentId}`, { method: 'DELETE' }).then(response => response.json());
+  return fetch(`http://${HOST}/files/${currentId}`, { method: 'DELETE' }).then(response => response.json());
 }

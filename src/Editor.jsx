@@ -10,7 +10,7 @@ const TextContainer = styled.div`
 `;
 
 export const Editor = (props) => {
-  const { text, setText } = props;
+  const { text, setText, editorKey } = props;
 
   const handleChange = value => {
     setText(value);
@@ -18,7 +18,7 @@ export const Editor = (props) => {
 
   return (
     <TextContainer>
-      <SimpleMDE id="mde" onChange={handleChange} value={text} options={{
+      <SimpleMDE id="mde" key={editorKey} onChange={handleChange} value={text} options={{
         autofocus: false,
         spellChecker: false,
         toolbar: false,
