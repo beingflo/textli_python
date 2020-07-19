@@ -61,6 +61,9 @@ def id_exists(id):
 def write_file(id, content):
     filename = id_to_filename(id)
 
-    f = open(os.path.join(NOTES_DIR, filename), 'w')
-    f.write(content)
-    f.close()
+    with open(os.path.join(NOTES_DIR, filename), 'w') as f:
+        f.write(content)
+
+
+def new_error(description):
+    return {'status': 'Error', 'description': description}

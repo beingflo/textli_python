@@ -2,7 +2,7 @@ import os
 import json
 from flask import Flask, request
 from flask_cors import CORS
-from util import get_file_list, get_next_id, id_to_filename, new_file_object, get_name, id_exists, write_file
+from util import get_file_list, get_next_id, id_to_filename, new_file_object, get_name, id_exists, write_file, new_error
 from constants import NOTES_DIR
 
 
@@ -23,7 +23,7 @@ from constants import NOTES_DIR
 # GET /files/<id>:
 # {
 #   status: 'Ok' | 'Error',
-#   file: FILE,
+#   content: string,
 # }
 #
 # POST /files:
@@ -41,7 +41,6 @@ from constants import NOTES_DIR
 # DELETE /files/<id>:
 # {
 #   status: 'Ok' | 'Error',
-#   file: FILE,
 # }
 #
 # TYPES
@@ -65,19 +64,18 @@ def listfiles():
         query = ''
 
     filelist = get_file_list(query)
-    return json.dumps(filelist)
+    return json.dumps({'status': 'Ok', 'files': filelist})
 
 
 @app.route('/files/<id>', methods=['GET'])
 def readfile(id):
     filename = id_to_filename(id)
     try:
-        f = open(os.path.join(NOTES_DIR, filename), 'r')
-        content = f.read()
-        f.close()
-        return content
+        with open(os.path.join(NOTES_DIR, filename), 'r') as f:
+            content = f.read()
+            return json.dumps({'status': 'Ok', 'content': content})
     except OSError as error:
-        return str(error)
+        return new_error(str(error))
 
 
 @app.route('/files', methods=['POST'])
@@ -86,10 +84,14 @@ def createfile():
 
     id = get_next_id()
 
-    write_file(id, content)
+    try:
+        write_file(id, content)
+    except OSError as error:
+        return new_error(str(error))
+
     name = get_name(content)
 
-    return new_file_object(id, name)
+    return json.dumps({'status': 'Ok', 'file': new_file_object(id, name)})
 
 
 @app.route('/files/<id>', methods=['PUT'])
@@ -99,20 +101,23 @@ def updatefile(id):
     if not id_exists(id):
         return 'File does not exist'
 
-    write_file(id, content)
+    try:
+        write_file(id, content)
+    except OSError as error:
+        return new_error(str(error))
 
-    return 'OK'
+    return json.dumps({'status': 'Ok', 'file': {'id': id, 'name': get_name(content)}})
 
 
 @app.route('/files/<id>', methods=['DELETE'])
 def deletefile(id):
     if not id_exists(id):
-        return 'File does not exist'
+        return new_error('File does not exist')
 
     filename = id_to_filename(id)
 
     try:
         os.remove(os.path.join(NOTES_DIR, filename))
-        return 'OK'
+        return json.dumps({'status': 'Ok'})
     except OSError as error:
-        return str(error)
+        return new_error(str(error))
