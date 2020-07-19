@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const SidebarContainer = styled.div`
   background-color: #fafafa;
-  height: 95vh;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;

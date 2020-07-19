@@ -7,7 +7,6 @@ const TextContainer = styled.div`
   height: 85vh;
   font-size: 18px;
   font-weight: lighter;
-  padding: 3% 5% 0 5%;
 `;
 
 export const Editor = (props) => {
