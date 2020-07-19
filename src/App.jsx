@@ -66,6 +66,9 @@ function App() {
     }
   }
 
+  const deleteFile = () => {};
+  const newFile = () => {};
+
   return (
     <div className="App">
       <header className="App-header">
@@ -75,7 +78,9 @@ function App() {
           </SidebarContainer>
           <EditorContainer>
             <ButtonContainer>
+              <Button onClick={newFile}>New</Button>
               <Button positive onClick={saveFile}>Save</Button>
+              <Button negative onClick={deleteFile}>Delete</Button>
             </ButtonContainer>
             <Editor text={text} setText={setText} />
           </EditorContainer>
