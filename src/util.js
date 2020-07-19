@@ -16,7 +16,7 @@ export const postFile = (content, setCurrentId) => {
     },
     body: content,
   })
-    .then(response => response.json()).then(res => setCurrentId(res.file.id));
+    .then(response => response.json()).then(res => setCurrentId(res.file.id.toString()));
 };
 
 export const updateFile = (content, currentId) => {

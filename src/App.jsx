@@ -13,14 +13,14 @@ const Container = styled.div`
 `;
 
 const SidebarContainer = styled.div`
-  width: 20%;
+  width: 25%;
 `;
 
 // overflow-y: scroll;
 // scrollbar-width: none;
 
 const EditorContainer = styled.div`
-  width: 80%;
+  width: 75%;
   padding: 0 2%;
 `;
 
@@ -56,26 +56,26 @@ function App() {
     }
   }, [currentId, text]);
 
-  const delFile = () => {
-    if (!currentId) {
-      newFile();
-      return;
-    }
-    deleteFile(currentId).then(() => newFile()).then(() => getFiles(setFiles));
-  };
-
   const newFile = React.useCallback(() => {
     setCurrentId(null);
     setText('');
     forceEditorRerender();
   }, [forceEditorRerender]);
 
+  const delFile = React.useCallback(() => {
+    if (!currentId) {
+      newFile();
+      return;
+    }
+    deleteFile(currentId).then(() => newFile()).then(() => getFiles(setFiles));
+  }, [currentId, newFile]);
+
   return (
     <div className="App">
       <header className="App-header">
         <Container>
           <SidebarContainer>
-            <Sidebar files={files} onFileClick={loadFile} />
+            <Sidebar files={files} currentId={currentId} onFileClick={loadFile} />
           </SidebarContainer>
           <EditorContainer>
             <ButtonContainer>

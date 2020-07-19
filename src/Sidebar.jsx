@@ -12,19 +12,19 @@ const SidebarContainer = styled.div`
 `;
 
 const FileEntry = styled.div`
-  color: black;
+  color: ${props => props.isSelected ? 'blue' : 'black'};
   font-size: 18px;
   padding-bottom: 10px;
   cursor: pointer;
 `;
 
 export const Sidebar = (props) => {
-  const { files, onFileClick } = props;
+  const { files, onFileClick, currentId } = props;
 
   return (
     <SidebarContainer>
       {files.map(file =>
-        <FileEntry key={file.id} data-id={file.id} onClick={e => onFileClick(e)}>
+        <FileEntry key={file.id} isSelected={file.id === currentId} data-id={file.id} onClick={e => onFileClick(e)}>
           {file.name}
         </FileEntry>
       )}
