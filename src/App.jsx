@@ -16,9 +16,6 @@ const SidebarContainer = styled.div`
   width: 25%;
 `;
 
-// overflow-y: scroll;
-// scrollbar-width: none;
-
 const EditorContainer = styled.div`
   width: 75%;
   padding: 0 2%;
@@ -27,6 +24,8 @@ const EditorContainer = styled.div`
 `;
 
 const ButtonContainer = styled.div`
+  display: flex; 
+  justify-content: space-between;
   padding: 1.5% 0;
 `;
 
@@ -100,13 +99,17 @@ function App() {
           </SidebarContainer>
           <EditorContainer>
             <ButtonContainer>
-              <Button onClick={newFile}>New</Button>
-              <Button positive onClick={saveFile}>
-                Save
-              </Button>
-              <Button negative onClick={delFile}>
-                Delete
-              </Button>
+              <div>
+                <Button size="large" onClick={newFile}>New</Button>
+                <Button size="large" positive onClick={saveFile}>
+                  Save
+                </Button>
+              </div>
+              <div>
+                <Button size="large" negative onClick={delFile}>
+                  Delete
+                </Button>
+              </div>
             </ButtonContainer>
             <Editor text={text} setText={setText} editorKey={editorKey} />
           </EditorContainer>

@@ -13,8 +13,9 @@ def get_file_list(query):
 
             content = open(fullpath, 'r').read()
 
-            if not query.lower() in content.lower():
-                continue
+            if query is not None:
+                if not query.lower() in content.lower():
+                    continue
 
             name = get_name(content)
             id = os.path.splitext(f)[0]

@@ -75,8 +75,6 @@ def verify_password(username, password):
 @auth.login_required
 def listfiles():
     query = request.args.get('query')
-    if query == None:
-        query = ''
 
     filelist = get_file_list(query)
     return json.dumps({'status': 'Ok', 'files': filelist})

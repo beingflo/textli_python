@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Form } from "semantic-ui-react";
+import { Form, List } from "semantic-ui-react";
 
 const SidebarContainer = styled.div`
   background-color: #fafafa;
@@ -18,14 +18,9 @@ const InputContainer = styled.div`
   font-size: 28px;
 `;
 
-const ResultsContainer = styled.div`
-  padding-left: 20px;
-`;
-
 const FileEntry = styled.div`
-  color: ${(props) => (props.isSelected ? "blue" : "black")};
+  color: ${(props) => (props.isSelected ? 'darkgrey' : 'black')};
   font-size: 18px;
-  padding-bottom: 10px;
   cursor: pointer;
 `;
 
@@ -58,18 +53,23 @@ export const Sidebar = (props) => {
           />
         </Form>
       </InputContainer>
-      <ResultsContainer>
+      <List size="mini" divided verticalAlign="middle">
         {files.map((file) => (
-          <FileEntry
-            key={file.id}
-            isSelected={file.id === currentId}
-            data-id={file.id}
-            onClick={(e) => onFileClick(e)}
-          >
-            {file.name || "[no content]"}
-          </FileEntry>
+          <List.Item key={file.id}>
+            <List.Icon name="file text outline" style={{ color: "grey" }} />
+            <List.Content>
+              <FileEntry
+                key={file.id}
+                isSelected={file.id === currentId}
+                data-id={file.id}
+                onClick={(e) => onFileClick(e)}
+              >
+                {file.name || "[no content]"}
+              </FileEntry>
+            </List.Content>
+          </List.Item>
         ))}
-      </ResultsContainer>
+      </List>
     </SidebarContainer>
   );
 };
