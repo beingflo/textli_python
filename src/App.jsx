@@ -1,10 +1,10 @@
-import React from 'react';
-import './App.css';
-import { Editor } from './Editor'
-import { Sidebar } from './Sidebar'
+import React from "react";
+import "./App.css";
+import { Editor } from "./Editor";
+import { Sidebar } from "./Sidebar";
 import { Button } from "semantic-ui-react";
-import styled from 'styled-components';
-import {getFile, getFiles, postFile, updateFile, deleteFile} from "./util";
+import styled from "styled-components";
+import { getFile, getFiles, postFile, updateFile, deleteFile } from "./util";
 
 const Container = styled.div`
   display: flex;
@@ -22,6 +22,8 @@ const SidebarContainer = styled.div`
 const EditorContainer = styled.div`
   width: 75%;
   padding: 0 2%;
+  overflow-y: scroll;
+  scrollbar-width: none;
 `;
 
 const ButtonContainer = styled.div`
@@ -29,26 +31,29 @@ const ButtonContainer = styled.div`
 `;
 
 function App() {
-  const [text, setText] = React.useState('');
-  const [files, setFiles] = React.useState([])
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [text, setText] = React.useState("");
+  const [files, setFiles] = React.useState([]);
+  const [searchTerm, setSearchTerm] = React.useState("");
   const [searchLoading, setSearchLoading] = React.useState(false);
   const [currentId, setCurrentId] = React.useState(null);
 
   const [editorKey, setEditorKey] = React.useState(42);
 
   const forceEditorRerender = React.useCallback(() => {
-    setEditorKey(editorKey +  1);
+    setEditorKey(editorKey + 1);
   }, [editorKey]);
 
   React.useEffect(() => {
-    getFiles(setFiles, '');
+    getFiles(setFiles, "");
   }, []);
 
-  const loadFile = React.useCallback(e => {
-    const id = e.currentTarget.dataset.id;
-    getFile(id, setText, setCurrentId).then(() => forceEditorRerender());
-  }, [forceEditorRerender]);
+  const loadFile = React.useCallback(
+    (e) => {
+      const id = e.currentTarget.dataset.id;
+      getFile(id, setText, setCurrentId).then(() => forceEditorRerender());
+    },
+    [forceEditorRerender]
+  );
 
   const saveFile = React.useCallback(() => {
     if (currentId) {
@@ -60,7 +65,7 @@ function App() {
 
   const newFile = React.useCallback(() => {
     setCurrentId(null);
-    setText('');
+    setText("");
     forceEditorRerender();
   }, [forceEditorRerender]);
 
@@ -69,26 +74,39 @@ function App() {
       newFile();
       return;
     }
-    deleteFile(currentId).then(() => newFile()).then(() => getFiles(setFiles, searchTerm));
+    deleteFile(currentId)
+      .then(() => newFile())
+      .then(() => getFiles(setFiles, searchTerm));
   }, [currentId, newFile, searchTerm]);
 
   const onSubmit = () => {
     setSearchLoading(true);
     getFiles(setFiles, searchTerm).then(() => setSearchLoading(false));
-  }
+  };
 
   return (
     <div className="App">
       <header className="App-header">
         <Container>
           <SidebarContainer>
-            <Sidebar setSearchTerm={setSearchTerm} loading={searchLoading} onSubmit={onSubmit} files={files} currentId={currentId} onFileClick={loadFile} />
+            <Sidebar
+              setSearchTerm={setSearchTerm}
+              loading={searchLoading}
+              onSubmit={onSubmit}
+              files={files}
+              currentId={currentId}
+              onFileClick={loadFile}
+            />
           </SidebarContainer>
           <EditorContainer>
             <ButtonContainer>
               <Button onClick={newFile}>New</Button>
-              <Button positive onClick={saveFile}>Save</Button>
-              <Button negative onClick={delFile}>Delete</Button>
+              <Button positive onClick={saveFile}>
+                Save
+              </Button>
+              <Button negative onClick={delFile}>
+                Delete
+              </Button>
             </ButtonContainer>
             <Editor text={text} setText={setText} editorKey={editorKey} />
           </EditorContainer>
