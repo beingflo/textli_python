@@ -31,6 +31,8 @@ const ButtonContainer = styled.div`
 function App() {
   const [text, setText] = React.useState('');
   const [files, setFiles] = React.useState([])
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchLoading, setSearchLoading] = React.useState(false);
   const [currentId, setCurrentId] = React.useState(null);
 
   const [editorKey, setEditorKey] = React.useState(42);
@@ -40,7 +42,7 @@ function App() {
   }, [editorKey]);
 
   React.useEffect(() => {
-    getFiles(setFiles);
+    getFiles(setFiles, '');
   }, []);
 
   const loadFile = React.useCallback(e => {
@@ -50,11 +52,11 @@ function App() {
 
   const saveFile = React.useCallback(() => {
     if (currentId) {
-      updateFile(text, currentId).then(() => getFiles(setFiles));
+      updateFile(text, currentId).then(() => getFiles(setFiles, searchTerm));
     } else {
-      postFile(text, setCurrentId).then(() => getFiles(setFiles));
+      postFile(text, setCurrentId).then(() => getFiles(setFiles, searchTerm));
     }
-  }, [currentId, text]);
+  }, [currentId, text, searchTerm]);
 
   const newFile = React.useCallback(() => {
     setCurrentId(null);
@@ -67,15 +69,20 @@ function App() {
       newFile();
       return;
     }
-    deleteFile(currentId).then(() => newFile()).then(() => getFiles(setFiles));
-  }, [currentId, newFile]);
+    deleteFile(currentId).then(() => newFile()).then(() => getFiles(setFiles, searchTerm));
+  }, [currentId, newFile, searchTerm]);
+
+  const onSubmit = () => {
+    setSearchLoading(true);
+    getFiles(setFiles, searchTerm).then(() => setSearchLoading(false));
+  }
 
   return (
     <div className="App">
       <header className="App-header">
         <Container>
           <SidebarContainer>
-            <Sidebar files={files} currentId={currentId} onFileClick={loadFile} />
+            <Sidebar setSearchTerm={setSearchTerm} loading={searchLoading} onSubmit={onSubmit} files={files} currentId={currentId} onFileClick={loadFile} />
           </SidebarContainer>
           <EditorContainer>
             <ButtonContainer>

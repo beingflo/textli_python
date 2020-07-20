@@ -1,12 +1,12 @@
 const HOST = 'localhost:5000';
 
-export const getFiles = (setFiles) => {
-  fetch(`http://${HOST}/files`, {
+export const getFiles = (setFiles, query=null) => {
+  return fetch(`http://${HOST}/files?query=${query || ''}`, {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${getAuthentication()}`,
     },
-  }).then(res => res.json()).then(res => setFiles(res.files))
+  }).then(res => res.json()).then(res => setFiles(res.files));
 }
 
 export const getFile = (id, setText, setCurrentId) => {
