@@ -3,7 +3,11 @@ import json
 from flask import Flask, request
 from flask_cors import CORS
 from util import get_file_list, get_next_id, id_to_filename, new_file_object, get_name, id_exists, write_file, new_error
+from flask_httpauth import HTTPBasicAuth
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from constants import NOTES_DIR
+from credentials import PASSWORD
 
 
 # JSON format for response
@@ -56,8 +60,19 @@ from constants import NOTES_DIR
 app = Flask(__name__)
 CORS(app)
 
+auth = HTTPBasicAuth()
+
+users = {
+    "florian": generate_password_hash(PASSWORD),
+}
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in users and check_password_hash(users.get(username), password):
+        return username
 
 @app.route('/files', methods=['GET'])
+@auth.login_required
 def listfiles():
     query = request.args.get('query')
     if query == None:
@@ -68,6 +83,7 @@ def listfiles():
 
 
 @app.route('/files/<id>', methods=['GET'])
+@auth.login_required
 def readfile(id):
     filename = id_to_filename(id)
     try:
@@ -79,6 +95,7 @@ def readfile(id):
 
 
 @app.route('/files', methods=['POST'])
+@auth.login_required
 def createfile():
     content = request.data.decode("utf-8")
 
@@ -95,6 +112,7 @@ def createfile():
 
 
 @app.route('/files/<id>', methods=['PUT'])
+@auth.login_required
 def updatefile(id):
     content = request.data.decode("utf-8")
 
@@ -110,6 +128,7 @@ def updatefile(id):
 
 
 @app.route('/files/<id>', methods=['DELETE'])
+@auth.login_required
 def deletefile(id):
     if not id_exists(id):
         return new_error('File does not exist')

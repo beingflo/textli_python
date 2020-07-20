@@ -1,18 +1,28 @@
 const HOST = 'localhost:5000';
 
 export const getFiles = (setFiles) => {
-  fetch(`http://${HOST}/files`).then(res => res.json()).then(res => setFiles(res.files))
+  fetch(`http://${HOST}/files`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${getAuthentication()}`,
+    },
+  }).then(res => res.json()).then(res => setFiles(res.files))
 }
 
 export const getFile = (id, setText, setCurrentId) => {
-  return fetch(`http://${HOST}/files/${id}`).then(res => res.json()).then(res => { setText(res.content); setCurrentId(id) });
+  return fetch(`http://${HOST}/files/${id}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${getAuthentication()}`,
+    },
+  }).then(res => res.json()).then(res => { setText(res.content); setCurrentId(id) });
 }
 
 export const postFile = (content, setCurrentId) => {
   return fetch(`http://${HOST}/files`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/text',
+      'Authorization': `Basic ${getAuthentication()}`,
     },
     body: content,
   })
@@ -23,7 +33,7 @@ export const updateFile = (content, currentId) => {
   return fetch(`http://${HOST}/files/${currentId}`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/text',
+      'Authorization': `Basic ${getAuthentication()}`,
     },
     body: content,
   })
@@ -31,5 +41,18 @@ export const updateFile = (content, currentId) => {
 }
 
 export const deleteFile = (currentId) => {
-  return fetch(`http://${HOST}/files/${currentId}`, { method: 'DELETE' }).then(response => response.json());
+  return fetch(`http://${HOST}/files/${currentId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Basic ${getAuthentication()}`,
+    },
+  }).then(response => response.json());
 }
+
+const getAuthentication = () => {
+  const name = localStorage.getItem('textly.n');
+  const password = localStorage.getItem('textly.p');
+
+  const token = name + ':' + password;
+  return btoa(token);
+};
