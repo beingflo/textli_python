@@ -25,7 +25,7 @@ export const Sidebar = (props) => {
     <SidebarContainer>
       {files.map(file =>
         <FileEntry key={file.id} isSelected={file.id === currentId} data-id={file.id} onClick={e => onFileClick(e)}>
-          {file.name}
+          {file.name || '[no content]'}
         </FileEntry>
       )}
     </SidebarContainer>
