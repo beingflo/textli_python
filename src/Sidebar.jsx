@@ -18,6 +18,10 @@ const InputContainer = styled.div`
   font-size: 28px;
 `;
 
+const ScrollPadding = styled.div`
+  height: 30px;
+`;
+
 const ResultsContainer = styled.div`
   overflow-y: scroll;
   scrollbar-width: none;
@@ -75,6 +79,7 @@ export const Sidebar = (props) => {
               </List.Content>
             </List.Item>
           ))}
+          <ScrollPadding />
         </List>
       </ResultsContainer>
     </SidebarContainer>
