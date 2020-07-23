@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { Editor } from "./Editor";
 import { Sidebar } from "./Sidebar";
-import { Button } from "semantic-ui-react";
+import { Button, Confirm } from "semantic-ui-react";
 import styled from "styled-components";
 import { getFile, getFiles, postFile, updateFile, deleteFile } from "./util";
 
@@ -24,7 +24,7 @@ const EditorContainer = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  display: flex; 
+  display: flex;
   justify-content: space-between;
   padding: 1.5% 0;
 `;
@@ -35,6 +35,7 @@ function App() {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchLoading, setSearchLoading] = React.useState(false);
   const [currentId, setCurrentId] = React.useState(null);
+  const [showConfirm, setShowConfirm] = React.useState(false);
 
   const [editorKey, setEditorKey] = React.useState(42);
 
@@ -83,6 +84,15 @@ function App() {
     getFiles(setFiles, searchTerm).then(() => setSearchLoading(false));
   };
 
+  const onConfirmDelete = () => {
+    setShowConfirm(false);
+    delFile();
+  };
+
+  const onCancelDelete = () => {
+    setShowConfirm(false);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -100,17 +110,32 @@ function App() {
           <EditorContainer>
             <ButtonContainer>
               <div>
-                <Button size="large" onClick={newFile}>New</Button>
+                <Button size="large" onClick={newFile}>
+                  New
+                </Button>
                 <Button size="large" positive onClick={saveFile}>
                   Save
                 </Button>
               </div>
               <div>
-                <Button size="large" negative onClick={delFile}>
+                <Button
+                  size="large"
+                  negative
+                  onClick={() => setShowConfirm(true)}
+                >
                   Delete
                 </Button>
               </div>
             </ButtonContainer>
+            <Confirm
+              open={showConfirm}
+              content="Do you want to delete this file?"
+              onConfirm={onConfirmDelete}
+              confirmButton="Delete"
+              cancelButton="Cancel"
+              onCancel={onCancelDelete}
+              size="mini"
+            />
             <Editor text={text} setText={setText} editorKey={editorKey} />
           </EditorContainer>
         </Container>
