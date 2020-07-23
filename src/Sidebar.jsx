@@ -14,12 +14,17 @@ const SidebarContainer = styled.div`
 `;
 
 const InputContainer = styled.div`
-  padding-bottom: 20px;
+  padding-bottom: 40px;
   font-size: 28px;
 `;
 
+const ResultsContainer = styled.div`
+  overflow-y: scroll;
+  scrollbar-width: none;
+`;
+
 const FileEntry = styled.div`
-  color: ${(props) => (props.isSelected ? 'darkgrey' : 'black')};
+  color: ${(props) => (props.isSelected ? "darkgrey" : "black")};
   font-size: 18px;
   cursor: pointer;
 `;
@@ -53,23 +58,25 @@ export const Sidebar = (props) => {
           />
         </Form>
       </InputContainer>
-      <List size="mini" divided verticalAlign="middle">
-        {files.map((file) => (
-          <List.Item key={file.id}>
-            <List.Icon name="file text outline" style={{ color: "grey" }} />
-            <List.Content>
-              <FileEntry
-                key={file.id}
-                isSelected={file.id === currentId}
-                data-id={file.id}
-                onClick={(e) => onFileClick(e)}
-              >
-                {file.name || "[no content]"}
-              </FileEntry>
-            </List.Content>
-          </List.Item>
-        ))}
-      </List>
+      <ResultsContainer>
+        <List size="mini" divided verticalAlign="middle">
+          {files.map((file) => (
+            <List.Item key={file.id}>
+              <List.Icon name="file text outline" style={{ color: "grey" }} />
+              <List.Content>
+                <FileEntry
+                  key={file.id}
+                  isSelected={file.id === currentId}
+                  data-id={file.id}
+                  onClick={(e) => onFileClick(e)}
+                >
+                  {file.name || "[no content]"}
+                </FileEntry>
+              </List.Content>
+            </List.Item>
+          ))}
+        </List>
+      </ResultsContainer>
     </SidebarContainer>
   );
 };

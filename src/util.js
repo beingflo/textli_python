@@ -57,8 +57,8 @@ export const deleteFile = (currentId) => {
 };
 
 const getAuthentication = () => {
-  const name = localStorage.getItem("textly.n");
-  const password = localStorage.getItem("textly.p");
+  const name = localStorage.getItem("textli.n");
+  const password = localStorage.getItem("textli.p");
 
   const token = name + ":" + password;
   return btoa(token);
