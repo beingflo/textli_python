@@ -1,7 +1,7 @@
-const HOST = "localhost:5000";
+const HOST = "http://localhost:5000";
 
 export const getFiles = (setFiles, query = null) => {
-  return fetch(`http://${HOST}/files?query=${query || ""}`, {
+  return fetch(`${HOST}/files?query=${query || ""}`, {
     method: "GET",
     headers: {
       Authorization: `Basic ${getAuthentication()}`,
@@ -12,7 +12,7 @@ export const getFiles = (setFiles, query = null) => {
 };
 
 export const getFile = (id, setText, setCurrentId) => {
-  return fetch(`http://${HOST}/files/${id}`, {
+  return fetch(`${HOST}/files/${id}`, {
     method: "GET",
     headers: {
       Authorization: `Basic ${getAuthentication()}`,
@@ -26,7 +26,7 @@ export const getFile = (id, setText, setCurrentId) => {
 };
 
 export const postFile = (content, setCurrentId) => {
-  return fetch(`http://${HOST}/files`, {
+  return fetch(`${HOST}/files`, {
     method: "POST",
     headers: {
       Authorization: `Basic ${getAuthentication()}`,
@@ -38,7 +38,7 @@ export const postFile = (content, setCurrentId) => {
 };
 
 export const updateFile = (content, currentId) => {
-  return fetch(`http://${HOST}/files/${currentId}`, {
+  return fetch(`${HOST}/files/${currentId}`, {
     method: "PUT",
     headers: {
       Authorization: `Basic ${getAuthentication()}`,
@@ -48,7 +48,7 @@ export const updateFile = (content, currentId) => {
 };
 
 export const deleteFile = (currentId) => {
-  return fetch(`http://${HOST}/files/${currentId}`, {
+  return fetch(`${HOST}/files/${currentId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Basic ${getAuthentication()}`,
