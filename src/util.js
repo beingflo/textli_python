@@ -1,4 +1,4 @@
-const HOST = "http://localhost:5000";
+import { HOST } from './env'
 
 export const getFiles = (setFiles, query = null) => {
   return fetch(`${HOST}/files?query=${query || ""}`, {
