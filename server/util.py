@@ -1,6 +1,6 @@
 import os
 import re
-from constants import NOTES_DIR, EXTENSION
+from constants import NOTES_DIR, EXTENSION, ARCHIVE_NAME
 
 
 def get_file_list(query):
@@ -21,6 +21,9 @@ def get_file_list(query):
             id = os.path.splitext(f)[0]
 
             filelist.append(new_file_object(id, name))
+
+        # Non recursively
+        break
 
     return filelist
 
@@ -57,6 +60,15 @@ def id_exists(id):
                 return True
 
     return False
+
+
+def archive_file(name):
+    archive_dir = os.path.join(NOTES_DIR, ARCHIVE_NAME)
+
+    if not os.path.exists(archive_dir):
+        os.mkdir(archive_dir)
+
+    os.rename(os.path.join(NOTES_DIR, name), os.path.join(archive_dir, name))
 
 
 def write_file(id, content):

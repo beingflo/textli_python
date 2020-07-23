@@ -2,13 +2,12 @@ import os
 import json
 from flask import Flask, request
 from flask_cors import CORS
-from util import get_file_list, get_next_id, id_to_filename, new_file_object, get_name, id_exists, write_file, new_error
+from util import get_file_list, get_next_id, id_to_filename, new_file_object, get_name, id_exists, write_file, new_error, archive_file
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from constants import NOTES_DIR
 from credentials import PASSWORD
-
 
 # JSON format for response
 #
@@ -66,10 +65,12 @@ users = {
     "florian": generate_password_hash(PASSWORD),
 }
 
+
 @auth.verify_password
 def verify_password(username, password):
     if username in users and check_password_hash(users.get(username), password):
         return username
+
 
 @app.route('/files', methods=['GET'])
 @auth.login_required
@@ -134,7 +135,7 @@ def deletefile(id):
     filename = id_to_filename(id)
 
     try:
-        os.remove(os.path.join(NOTES_DIR, filename))
+        archive_file(filename)
         return json.dumps({'status': 'Ok'})
     except OSError as error:
         return new_error(str(error))
