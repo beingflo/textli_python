@@ -5,6 +5,9 @@ import { Sidebar } from "./Sidebar";
 import { Button, Confirm } from "semantic-ui-react";
 import styled from "styled-components";
 import { getFile, getFiles, postFile, updateFile, deleteFile } from "./util";
+import { ToastContainer, toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastStyle } from "./ToastComponents";
 
 const Container = styled.div`
   display: flex;
@@ -56,11 +59,21 @@ function App() {
   );
 
   const saveFile = React.useCallback(() => {
-    if (currentId) {
-      updateFile(text, currentId).then(() => getFiles(setFiles, searchTerm));
-    } else {
-      postFile(text, setCurrentId).then(() => getFiles(setFiles, searchTerm));
+    if (text === "") {
+      return;
     }
+
+    let savePromise;
+
+    if (currentId) {
+      savePromise = updateFile(text, currentId);
+    } else {
+      savePromise = postFile(text, setCurrentId);
+    }
+
+    savePromise
+      .then(() => getFiles(setFiles, searchTerm))
+      .then(() => toast.success(<ToastStyle>File saved</ToastStyle>));
   }, [currentId, text, searchTerm]);
 
   const newFile = React.useCallback(() => {
@@ -76,7 +89,8 @@ function App() {
     }
     deleteFile(currentId)
       .then(() => newFile())
-      .then(() => getFiles(setFiles, searchTerm));
+      .then(() => getFiles(setFiles, searchTerm))
+      .then(() => toast.success(<ToastStyle>File deleted</ToastStyle>));
   }, [currentId, newFile, searchTerm]);
 
   const onSubmit = () => {
@@ -97,6 +111,13 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Container>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={2500}
+            transition={Slide}
+            hideProgressBar
+            closeOnClick
+          />
           <SidebarContainer>
             <Sidebar
               setSearchTerm={setSearchTerm}
