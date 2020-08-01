@@ -1,59 +1,70 @@
-import { HOST } from './env'
+import { HOST } from "./env";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { ToastStyle } from "./ToastComponents";
+import React from "react";
+
+const api = axios.create({
+  baseURL: `${HOST}`,
+});
 
 export const getFiles = (setFiles, query = null) => {
-  return fetch(`${HOST}/files?query=${query || ""}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Basic ${getAuthentication()}`,
-    },
-  })
-    .then((res) => res.json())
+  return api
+    .get(`/files?query=${query || ""}`, {
+      headers: {
+        Authorization: `Basic ${getAuthentication()}`,
+      },
+    })
+    .then((res) => res.data)
     .then((res) => setFiles(res.files));
 };
 
-export const getFile = (id, setText, setCurrentId) => {
-  return fetch(`${HOST}/files/${id}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Basic ${getAuthentication()}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      setText(res.content);
-      setCurrentId(id);
-    });
+export const getFile = (id) => {
+  return api
+    .get(`/files/${id}`, {
+      headers: {
+        Authorization: `Basic ${getAuthentication()}`,
+      },
+    })
+    .then((res) => res.data);
 };
 
-export const postFile = (content, setCurrentId) => {
-  return fetch(`${HOST}/files`, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${getAuthentication()}`,
-    },
-    body: content,
-  })
-    .then((response) => response.json())
-    .then((res) => setCurrentId(res.file.id.toString()));
+export const postFile = (content) => {
+  return api
+    .post(
+      "/files",
+      { content },
+      {
+        headers: {
+          Authorization: `Basic ${getAuthentication()}`,
+        },
+      }
+    )
+    .then((response) => response.data);
 };
 
 export const updateFile = (content, currentId) => {
-  return fetch(`${HOST}/files/${currentId}`, {
-    method: "PUT",
-    headers: {
-      Authorization: `Basic ${getAuthentication()}`,
-    },
-    body: content,
-  }).then((response) => response.json());
+  return api
+    .put(
+      `/files/${currentId}`,
+      { content },
+      {
+        headers: {
+          Authorization: `Basic ${getAuthentication()}`,
+        },
+      }
+    )
+    .then((response) => response.data);
 };
 
 export const deleteFile = (currentId) => {
-  return fetch(`${HOST}/files/${currentId}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Basic ${getAuthentication()}`,
-    },
-  }).then((response) => response.json());
+  return api
+    .delete(`/files/${currentId}`, {
+      headers: {
+        Authorization: `Basic ${getAuthentication()}`,
+      },
+    })
+    .then((response) => response.data);
 };
 
 const getAuthentication = () => {
@@ -62,4 +73,8 @@ const getAuthentication = () => {
 
   const token = name + ":" + password;
   return btoa(token);
+};
+
+export const showErrorToast = (err) => {
+  toast.error(<ToastStyle>{err.toString()}</ToastStyle>);
 };

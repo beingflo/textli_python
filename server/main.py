@@ -96,7 +96,8 @@ def readfile(id):
 @app.route('/files', methods=['POST'])
 @auth.login_required
 def createfile():
-    content = request.data.decode("utf-8")
+    body = request.data.decode("utf-8")
+    content = json.loads(body)['content']
 
     id = get_next_id()
 
@@ -113,7 +114,8 @@ def createfile():
 @app.route('/files/<id>', methods=['PUT'])
 @auth.login_required
 def updatefile(id):
-    content = request.data.decode("utf-8")
+    body = request.data.decode("utf-8")
+    content = json.loads(body)['content']
 
     if not id_exists(id):
         return 'File does not exist'

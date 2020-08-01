@@ -4,7 +4,7 @@ import { Editor } from "./Editor";
 import { Sidebar } from "./Sidebar";
 import { Button, Confirm } from "semantic-ui-react";
 import styled from "styled-components";
-import { getFile, getFiles, postFile, updateFile, deleteFile } from "./util";
+import {getFile, getFiles, postFile, updateFile, deleteFile, showErrorToast} from "./util";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastStyle } from "./ToastComponents";
@@ -47,13 +47,19 @@ function App() {
   }, [editorKey]);
 
   React.useEffect(() => {
-    getFiles(setFiles, "");
+    getFiles(setFiles, "").catch((err) => showErrorToast(err));
   }, []);
 
   const loadFile = React.useCallback(
     (e) => {
       const id = e.currentTarget.dataset.id;
-      getFile(id, setText, setCurrentId).then(() => forceEditorRerender());
+      getFile(id)
+        .then((res) => {
+          setText(res.content);
+          setCurrentId(id);
+        })
+        .then(() => forceEditorRerender())
+        .catch((err) => showErrorToast(err));
     },
     [forceEditorRerender]
   );
@@ -68,12 +74,15 @@ function App() {
     if (currentId) {
       savePromise = updateFile(text, currentId);
     } else {
-      savePromise = postFile(text, setCurrentId);
+      savePromise = postFile(text).then((res) =>
+        setCurrentId(res.file.id.toString())
+      );
     }
 
     savePromise
       .then(() => getFiles(setFiles, searchTerm))
-      .then(() => toast.success(<ToastStyle>File saved</ToastStyle>));
+      .then(() => toast.success(<ToastStyle>File saved</ToastStyle>))
+      .catch((err) => showErrorToast(err));
   }, [currentId, text, searchTerm]);
 
   const newFile = React.useCallback(() => {
@@ -90,12 +99,15 @@ function App() {
     deleteFile(currentId)
       .then(() => newFile())
       .then(() => getFiles(setFiles, searchTerm))
-      .then(() => toast.success(<ToastStyle>File deleted</ToastStyle>));
+      .then(() => toast.success(<ToastStyle>File deleted</ToastStyle>))
+      .catch((err) => showErrorToast(err));
   }, [currentId, newFile, searchTerm]);
 
   const onSubmit = () => {
     setSearchLoading(true);
-    getFiles(setFiles, searchTerm).then(() => setSearchLoading(false));
+    getFiles(setFiles, searchTerm)
+      .then(() => setSearchLoading(false))
+      .catch((err) => showErrorToast(err));
   };
 
   const onConfirmDelete = () => {
