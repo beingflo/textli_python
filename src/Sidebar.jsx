@@ -38,11 +38,6 @@ export const Sidebar = (props) => {
 
   const [inputValue, setInputValue] = React.useState("");
 
-  const onChange = (event, data) => {
-    const { value } = data;
-    setInputValue(value);
-  };
-
   const submit = React.useCallback(
     (value) => {
       onSubmit(value);
@@ -50,6 +45,12 @@ export const Sidebar = (props) => {
     },
     [setInputValue, onSubmit]
   );
+
+  const onChange = (event, data) => {
+    const { value } = data;
+    setInputValue(value);
+    submit(value);
+  };
 
   return (
     <SidebarContainer>
