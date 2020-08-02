@@ -103,9 +103,10 @@ function App() {
       .catch((err) => showErrorToast(err));
   }, [currentId, newFile, searchTerm]);
 
-  const onSubmit = () => {
+  const onSubmit = (inputValue) => {
+    setSearchTerm(inputValue);
     setSearchLoading(true);
-    getFiles(setFiles, searchTerm)
+    getFiles(setFiles, inputValue)
       .then(() => setSearchLoading(false))
       .catch((err) => showErrorToast(err));
   };
@@ -132,7 +133,6 @@ function App() {
           />
           <SidebarContainer>
             <Sidebar
-              setSearchTerm={setSearchTerm}
               loading={searchLoading}
               onSubmit={onSubmit}
               files={files}

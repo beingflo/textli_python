@@ -34,31 +34,41 @@ const FileEntry = styled.div`
 `;
 
 export const Sidebar = (props) => {
-  const {
-    files,
-    onFileClick,
-    currentId,
-    setSearchTerm,
-    onSubmit,
-    loading,
-  } = props;
+  const { files, onFileClick, currentId, onSubmit, loading } = props;
+
+  const [inputValue, setInputValue] = React.useState("");
 
   const onChange = (event, data) => {
     const { value } = data;
-    setSearchTerm(value);
+    setInputValue(value);
   };
+
+  const submit = React.useCallback(
+    (value) => {
+      onSubmit(value);
+      setInputValue(value);
+    },
+    [setInputValue, onSubmit]
+  );
 
   return (
     <SidebarContainer>
       <InputContainer>
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={() => submit(inputValue)}>
           <Form.Input
+            value={inputValue}
             onChange={onChange}
             loading={loading}
             fluid
-            icon={<Icon name="search" link onClick={onSubmit} />}
+            icon={
+              inputValue === "" ? (
+                <Icon name="search" link />
+              ) : (
+                <Icon name="x" link onClick={() => submit("")} />
+              )
+            }
             size="big"
-            placeholder="Search notes ..."
+            placeholder="Search notes..."
           />
         </Form>
       </InputContainer>
