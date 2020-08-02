@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Form, List } from "semantic-ui-react";
+import { Form, List, Icon } from "semantic-ui-react";
 
 const SidebarContainer = styled.div`
   background-color: #fafafa;
@@ -56,7 +56,7 @@ export const Sidebar = (props) => {
             onChange={onChange}
             loading={loading}
             fluid
-            icon="search"
+            icon={<Icon name="search" link onClick={onSubmit} />}
             size="big"
             placeholder="Search notes ..."
           />
