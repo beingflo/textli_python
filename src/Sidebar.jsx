@@ -76,11 +76,11 @@ export const Sidebar = (props) => {
         </Form>
       </InputContainer>
       <ResultsContainer>
-        <List size="mini" divided verticalAlign="middle">
+        <List size="tiny" verticalAlign="middle">
           {files.map((file) => (
-            <List.Item key={file.id}>
-              <List.Icon name="file text outline" style={{ color: file.id === currentId ? SELECTION_COLOR : "grey" }} />
-              <List.Content>
+            <List.Item key={file.id} style={{ backgroundColor: file.id === currentId && "white"}}>
+              <List.Icon verticalAlign="middle" name="file text outline" style={{ color: file.id === currentId ? SELECTION_COLOR : "grey" }} />
+              <List.Content verticalAlign="middle">
                 <FileEntry
                   key={file.id}
                   isSelected={file.id === currentId}
