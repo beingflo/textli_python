@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Form, List, Icon } from "semantic-ui-react";
 
+const SELECTION_COLOR = "dodgerblue";
+
 const SidebarContainer = styled.div`
   background-color: #fafafa;
   height: 100vh;
@@ -28,7 +30,7 @@ const ResultsContainer = styled.div`
 `;
 
 const FileEntry = styled.div`
-  color: ${(props) => (props.isSelected ? "darkgrey" : "black")};
+  color: ${(props) => (props.isSelected ? SELECTION_COLOR : "black")};
   font-size: 18px;
   cursor: pointer;
 `;
@@ -77,7 +79,7 @@ export const Sidebar = (props) => {
         <List size="mini" divided verticalAlign="middle">
           {files.map((file) => (
             <List.Item key={file.id}>
-              <List.Icon name="file text outline" style={{ color: "grey" }} />
+              <List.Icon name="file text outline" style={{ color: file.id === currentId ? SELECTION_COLOR : "grey" }} />
               <List.Content>
                 <FileEntry
                   key={file.id}
