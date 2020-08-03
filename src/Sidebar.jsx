@@ -14,17 +14,17 @@ const SidebarContainer = styled.div`
 `;
 
 const InputContainer = styled.div`
-  padding-bottom: 40px;
   font-size: 28px;
-`;
-
-const ScrollPadding = styled.div`
-  height: 30px;
 `;
 
 const ResultsContainer = styled.div`
   overflow-y: scroll;
-  scrollbar-width: none;
+  margin: 30px 0;
+  padding: 0 15px;
+  scrollbar-width: none; 
+  &:hover {
+    scrollbar-width: thin; 
+  },
 `;
 
 const FileEntry = styled.div`
@@ -90,7 +90,6 @@ export const Sidebar = (props) => {
               </List.Content>
             </List.Item>
           ))}
-          <ScrollPadding />
         </List>
       </ResultsContainer>
     </SidebarContainer>
