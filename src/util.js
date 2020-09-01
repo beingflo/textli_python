@@ -4,6 +4,9 @@ import { toast } from "react-toastify";
 import { ToastStyle } from "./ToastComponents";
 import React from "react";
 
+export const USERNAME_KEY = 'textli.n';
+export const PASSWORD_KEY = 'textli.p';
+
 const api = axios.create({
   baseURL: `${HOST}`,
 });
@@ -68,13 +71,17 @@ export const deleteFile = (currentId) => {
 };
 
 const getAuthentication = () => {
-  const name = localStorage.getItem("textli.n");
-  const password = localStorage.getItem("textli.p");
+  const name = localStorage.getItem(USERNAME_KEY);
+  const password = localStorage.getItem(PASSWORD_KEY);
 
   const token = name + ":" + password;
   return btoa(token);
 };
 
-export const showErrorToast = (err) => {
-  toast.error(<ToastStyle>{err.toString()}</ToastStyle>);
+export const handleError = (err, setShowLoginScreen) => {
+  if(err.response.status) {
+    setShowLoginScreen(true);
+  } else {
+    toast.error(<ToastStyle>{err.toString()}</ToastStyle>);
+  }
 };

@@ -4,10 +4,11 @@ import { Editor } from "./Editor";
 import { Sidebar } from "./Sidebar";
 import { Button, Confirm } from "semantic-ui-react";
 import styled from "styled-components";
-import {getFile, getFiles, postFile, updateFile, deleteFile, showErrorToast} from "./util";
+import {getFile, getFiles, postFile, updateFile, deleteFile, handleError} from "./util";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastStyle } from "./ToastComponents";
+import Login from "./Login";
 
 const Container = styled.div`
   display: flex;
@@ -39,6 +40,7 @@ function App() {
   const [searchLoading, setSearchLoading] = React.useState(false);
   const [currentId, setCurrentId] = React.useState(null);
   const [showConfirm, setShowConfirm] = React.useState(false);
+  const [showLoginScreen, setShowLoginScreen] = React.useState(false);
 
   const [editorKey, setEditorKey] = React.useState(42);
 
@@ -46,9 +48,11 @@ function App() {
     setEditorKey(editorKey + 1);
   }, [editorKey]);
 
-  React.useEffect(() => {
-    getFiles(setFiles, "").catch((err) => showErrorToast(err));
-  }, []);
+  const getInitialFiles = () => {
+    getFiles(setFiles, "").catch((err) => handleError(err, setShowLoginScreen));
+  }
+
+  React.useEffect(() => getInitialFiles(), []);
 
   const loadFile = React.useCallback(
     (e) => {
@@ -59,7 +63,7 @@ function App() {
           setCurrentId(id);
         })
         .then(() => forceEditorRerender())
-        .catch((err) => showErrorToast(err));
+        .catch((err) => handleError(err, setShowLoginScreen));
     },
     [forceEditorRerender]
   );
@@ -82,7 +86,7 @@ function App() {
     savePromise
       .then(() => getFiles(setFiles, searchTerm))
       .then(() => toast.success(<ToastStyle>File saved</ToastStyle>))
-      .catch((err) => showErrorToast(err));
+      .catch((err) => handleError(err, setShowLoginScreen));
   }, [currentId, text, searchTerm]);
 
   const newFile = React.useCallback(() => {
@@ -100,7 +104,7 @@ function App() {
       .then(() => newFile())
       .then(() => getFiles(setFiles, searchTerm))
       .then(() => toast.success(<ToastStyle>File deleted</ToastStyle>))
-      .catch((err) => showErrorToast(err));
+      .catch((err) => handleError(err, setShowLoginScreen));
   }, [currentId, newFile, searchTerm]);
 
   const onSubmit = (inputValue) => {
@@ -108,7 +112,7 @@ function App() {
     setSearchLoading(true);
     getFiles(setFiles, inputValue)
       .then(() => setSearchLoading(false))
-      .catch((err) => showErrorToast(err));
+      .catch((err) => handleError(err, setShowLoginScreen));
   };
 
   const onConfirmDelete = () => {
@@ -119,6 +123,10 @@ function App() {
   const onCancelDelete = () => {
     setShowConfirm(false);
   };
+
+  if(showLoginScreen) {
+    return <Login setShowLogin={setShowLoginScreen} getInitialFiles={() => getInitialFiles()}/>;
+  }
 
   return (
     <div className="App">
